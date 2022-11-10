@@ -180,3 +180,42 @@ group by a.ProductName,
     d.CompanyName, 
     year(OrderDate)
 order by a.ProductName, d.CompanyName;
+
+
+
+ -- 15. Invoice
+ select ShipName, 
+    ShipAddress, 
+    ShipCity, 
+    ShipRegion, 
+    ShipPostalCode
+ from orders 
+ order by ShipName;
+
+
+-- 16. Number of units in stock by category and supplier continent
+select c.CategoryName as 'Product Category', 
+		case when s.Country in 
+				(
+					'UK','Spain','Sweden','Germany','Norway',
+					'Denmark','Netherlands','Finland','Italy','France'
+				)then 'Europe'
+            when s.Country in ('USA','Canada','Brazil') then 'America'
+            else 'Asia-Pacific'
+        end as 'Supplier Continent', 
+        sum(p.UnitsInStock) as UnitsInStock
+from Suppliers s 
+inner join Products p 
+using(SupplierID)
+inner join Categories c 
+using(CategoryID) 
+group by c.CategoryName, 
+		case when s.Country in 
+				(
+					'UK','Spain','Sweden','Germany','Norway',
+					'Denmark','Netherlands','Finland','Italy','France'
+				)then 'Europe'
+                
+              when s.Country in ('USA','Canada','Brazil') then 'America'
+              else 'Asia-Pacific'
+		end;
